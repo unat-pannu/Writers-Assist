@@ -1,0 +1,42 @@
+/* Dark theme for ScreenWritingFXPro */
+.root {
+    -fx-font-family: "Arial";
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: #ffffff;
+}
+
+.label {
+    -fx-text-fill: #ffffff;
+}
+
+.text-field, .text-area {
+    -fx-background-color: #2b2b2b;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #444444;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.button {
+    -fx-background-color: #4a90e2;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+}
+
+.button:hover {
+    -fx-background-color: #357ab8;
+}
+
+.tree-view {
+    -fx-background-color: #2b2b2b;
+    -fx-border-color: #444444;
+}
+
+.scroll-pane {
+    -fx-background: #1e1e1e;
+}
+
+.vbox {
+    -fx-spacing: 10;
+}
