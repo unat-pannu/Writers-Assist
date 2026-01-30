@@ -8,9 +8,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import javafx.scene.Node;
+
+
 import java.sql.*;
+
 public class ScreenWritingFXPro extends Application {
+
+    // ---------- DB ----------
     private static final String DB_URL =
             "jdbc:mysql://localhost:3306/ScreenwritingDB?useSSL=false&serverTimezone=UTC";
     private static final String DB_USER = "root";
@@ -19,48 +23,68 @@ public class ScreenWritingFXPro extends Application {
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
     }
+
+    // ---------- UI ----------
     private TreeView<String> projectTree;
     private FlowPane canvas;
     private Label status;
     private int currentProjectId = -1;
     @Override
     public void start(Stage stage) {
+
+        // ---------- LEFT : PROJECT TREE ----------
         projectTree = new TreeView<>();
         projectTree.setPrefWidth(280);
         loadProjects();
+
         projectTree.getSelectionModel().selectedItemProperty().addListener((o, a, b) -> {
             if (b == null) return;
             currentProjectId = Integer.parseInt(b.getGraphic().getId());
             loadWidgets();
         });
+
+        // ---------- TOP BAR ----------
         Button addProject = new Button("+ Project");
         Button addWidget = new Button("+ Add Widget");
+
         addProject.setOnAction(e -> createProject());
         addWidget.setOnAction(e -> showAddWidgetDialog());
+
         HBox topBar = new HBox(10, addProject, addWidget);
         topBar.setPadding(new Insets(10));
+
+        // ---------- CANVAS ----------
         canvas = new FlowPane();
         canvas.setHgap(14);
         canvas.setVgap(14);
         canvas.setPadding(new Insets(14));
+
         ScrollPane scroll = new ScrollPane(canvas);
         scroll.setFitToWidth(true);
+
         status = new Label("Ready");
+
         VBox right = new VBox(topBar, scroll, status);
         VBox.setVgrow(scroll, Priority.ALWAYS);
+
         SplitPane root = new SplitPane(projectTree, right);
         root.setDividerPositions(0.25);
+
         Scene scene = new Scene(root, 1200, 750);
         stage.setTitle("ScreenWritingFXPro — Project Boards");
         stage.setScene(scene);
         stage.show();
     }
+
+    // ---------- PROJECTS ----------
     private void loadProjects() {
         TreeItem<String> root = new TreeItem<>("Projects");
         root.setExpanded(true);
+
         try (Connection con = getConnection()) {
             ResultSet rs = con.createStatement()
                     .executeQuery("SELECT Project_id, title FROM Project");
+
             while (rs.next()) {
                 TreeItem<String> item = new TreeItem<>(rs.getString("title"));
                 Label id = new Label();
@@ -69,8 +93,10 @@ public class ScreenWritingFXPro extends Application {
                 root.getChildren().add(item);
             }
         } catch (Exception e) { e.printStackTrace(); }
+
         projectTree.setRoot(root);
     }
+
     private void createProject() {
         TextInputDialog d = new TextInputDialog();
         d.setHeaderText("New Project");
@@ -85,23 +111,31 @@ public class ScreenWritingFXPro extends Application {
             } catch (Exception e) { e.printStackTrace(); }
         });
     }
+
+    // ---------- WIDGETS ----------
     private void showAddWidgetDialog() {
         if (currentProjectId == -1) return;
+
         Dialog<ButtonType> d = new Dialog<>();
         d.setTitle("Add Widget");
+
         ComboBox<String> type = new ComboBox<>();
         type.getItems().addAll("TEXT", "IMAGE", "SPOTIFY", "PINTEREST");
         type.getSelectionModel().selectFirst();
+
         TextField content = new TextField();
         content.setPromptText("Text / Image path / Embed URL");
+
         VBox box = new VBox(10, new Label("Type"), type, content);
         box.setPadding(new Insets(10));
         d.getDialogPane().setContent(box);
         d.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
         d.showAndWait().ifPresent(b -> {
             if (b == ButtonType.OK) saveWidget(type.getValue(), content.getText());
         });
     }
+
     private void saveWidget(String type, String content) {
         try (Connection con = getConnection()) {
             PreparedStatement ps = con.prepareStatement(
@@ -115,6 +149,7 @@ public class ScreenWritingFXPro extends Application {
             loadWidgets();
         } catch (Exception e) { e.printStackTrace(); }
     }
+
     private void loadWidgets() {
         canvas.getChildren().clear();
         try (Connection con = getConnection()) {
@@ -123,6 +158,7 @@ public class ScreenWritingFXPro extends Application {
             );
             ps.setInt(1, currentProjectId);
             ResultSet rs = ps.executeQuery();
+
             while (rs.next()) {
                 int id = rs.getInt("Widget_id");
                 String type = rs.getString("type");
@@ -132,13 +168,12 @@ public class ScreenWritingFXPro extends Application {
             }
         } catch (Exception e) { e.printStackTrace(); }
     }
+
     private Pane buildWidget(int id, String type, String content) {
-        VBox card = new VBox(10);
-        card.setPadding(new Insets(16));
-        card.setMinWidth(420);
-        card.setPrefWidth(420);
-        card.setMaxWidth(420);
+        VBox card = new VBox(6);
+        card.setPadding(new Insets(10));
         card.setStyle("-fx-background-color:#1e1e2f;-fx-border-radius:12;-fx-background-radius:12;");
+
         Node body = switch (type) {
             case "TEXT" -> {
                 TextArea t = new TextArea(content);
@@ -153,19 +188,22 @@ public class ScreenWritingFXPro extends Application {
             }
             default -> {
                 WebView web = new WebView();
-                web.setPrefSize(400,500);
-                web.setZoom(0.6);
+                web.setPrefSize(280,180);
                 web.getEngine().load(content);
                 yield web;
             }
         };
+
         Button del = new Button("✕");
         del.setOnAction(e -> deleteWidget(id));
+
         HBox head = new HBox(del);
         head.setAlignment(Pos.TOP_RIGHT);
+
         card.getChildren().addAll(head, body);
         return card;
     }
+
     private void updateWidget(int id, String content) {
         try (Connection con = getConnection()) {
             PreparedStatement ps = con.prepareStatement(
@@ -176,6 +214,7 @@ public class ScreenWritingFXPro extends Application {
             ps.executeUpdate();
         } catch (Exception ignored) {}
     }
+
     private void deleteWidget(int id) {
         try (Connection con = getConnection()) {
             PreparedStatement ps = con.prepareStatement(
@@ -186,6 +225,7 @@ public class ScreenWritingFXPro extends Application {
             loadWidgets();
         } catch (Exception e) { e.printStackTrace(); }
     }
+
     public static void main(String[] args) {
         launch(args);
     }

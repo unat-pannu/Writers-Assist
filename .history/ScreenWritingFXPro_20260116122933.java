@@ -9,7 +9,10 @@ import javafx.scene.layout.*;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.scene.Node;
+
+
 import java.sql.*;
+
 public class ScreenWritingFXPro extends Application {
     private static final String DB_URL =
             "jdbc:mysql://localhost:3306/ScreenwritingDB?useSSL=false&serverTimezone=UTC";

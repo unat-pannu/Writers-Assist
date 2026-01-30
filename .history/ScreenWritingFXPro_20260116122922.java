@@ -9,7 +9,10 @@ import javafx.scene.layout.*;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.scene.Node;
+
+
 import java.sql.*;
+
 public class ScreenWritingFXPro extends Application {
     private static final String DB_URL =
             "jdbc:mysql://localhost:3306/ScreenwritingDB?useSSL=false&serverTimezone=UTC";
@@ -132,6 +135,7 @@ public class ScreenWritingFXPro extends Application {
             }
         } catch (Exception e) { e.printStackTrace(); }
     }
+
     private Pane buildWidget(int id, String type, String content) {
         VBox card = new VBox(10);
         card.setPadding(new Insets(16));
@@ -139,6 +143,7 @@ public class ScreenWritingFXPro extends Application {
         card.setPrefWidth(420);
         card.setMaxWidth(420);
         card.setStyle("-fx-background-color:#1e1e2f;-fx-border-radius:12;-fx-background-radius:12;");
+
         Node body = switch (type) {
             case "TEXT" -> {
                 TextArea t = new TextArea(content);
@@ -159,13 +164,17 @@ public class ScreenWritingFXPro extends Application {
                 yield web;
             }
         };
+
         Button del = new Button("✕");
         del.setOnAction(e -> deleteWidget(id));
+
         HBox head = new HBox(del);
         head.setAlignment(Pos.TOP_RIGHT);
+
         card.getChildren().addAll(head, body);
         return card;
     }
+
     private void updateWidget(int id, String content) {
         try (Connection con = getConnection()) {
             PreparedStatement ps = con.prepareStatement(
@@ -176,6 +185,7 @@ public class ScreenWritingFXPro extends Application {
             ps.executeUpdate();
         } catch (Exception ignored) {}
     }
+
     private void deleteWidget(int id) {
         try (Connection con = getConnection()) {
             PreparedStatement ps = con.prepareStatement(
@@ -186,6 +196,7 @@ public class ScreenWritingFXPro extends Application {
             loadWidgets();
         } catch (Exception e) { e.printStackTrace(); }
     }
+
     public static void main(String[] args) {
         launch(args);
     }

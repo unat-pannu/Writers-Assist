@@ -8,7 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import javafx.scene.Node;
+import javafx.scene.Node;/Users/Unat/Documents/College/sem 4/Advanced Java/Labs/Lab6/ScriptWriterSender.java /Users/Unat/Documents/College/sem 4/Advanced Java/Labs/Lab6/ScriptWriterReceiver.java
 import java.sql.*;
 public class ScreenWritingFXPro extends Application {
     private static final String DB_URL =

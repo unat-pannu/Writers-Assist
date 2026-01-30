@@ -9,7 +9,10 @@ import javafx.scene.layout.*;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.scene.Node;
+
+
 import java.sql.*;
+
 public class ScreenWritingFXPro extends Application {
     private static final String DB_URL =
             "jdbc:mysql://localhost:3306/ScreenwritingDB?useSSL=false&serverTimezone=UTC";
@@ -159,13 +162,17 @@ public class ScreenWritingFXPro extends Application {
                 yield web;
             }
         };
+
         Button del = new Button("✕");
         del.setOnAction(e -> deleteWidget(id));
+
         HBox head = new HBox(del);
         head.setAlignment(Pos.TOP_RIGHT);
+
         card.getChildren().addAll(head, body);
         return card;
     }
+
     private void updateWidget(int id, String content) {
         try (Connection con = getConnection()) {
             PreparedStatement ps = con.prepareStatement(
@@ -176,6 +183,7 @@ public class ScreenWritingFXPro extends Application {
             ps.executeUpdate();
         } catch (Exception ignored) {}
     }
+
     private void deleteWidget(int id) {
         try (Connection con = getConnection()) {
             PreparedStatement ps = con.prepareStatement(
@@ -186,6 +194,7 @@ public class ScreenWritingFXPro extends Application {
             loadWidgets();
         } catch (Exception e) { e.printStackTrace(); }
     }
+
     public static void main(String[] args) {
         launch(args);
     }
