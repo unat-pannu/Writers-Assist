@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+.root {
+    -fx-font-family: 'Inter', sans-serif;
+    -fx-base: #121212;
+    -fx-background: #0d0d0d;
+    -fx-control-inner-background: #1a1a1a;
+
+    /* Custom Design Tokens */
+    -bg-deep: #0a0a0a;
+    -bg-surface: #121212;
+    -bg-elevated: #1e1e1e;
+    -bg-glass: rgba(255, 255, 255, 0.04);
+
+    -accent: #6c5ce7;
+    -accent-faded: rgba(108, 92, 231, 0.15);
+    -text-primary: #e0e0e0;
+    -text-secondary: #909090;
+    -text-muted: #505050;
+
+    -border-color: rgba(255, 255, 255, 0.08);
+    -radius-lg: 12px;
+    -radius-md: 8px;
+}
+
+.main-shell {
+    -fx-background-color: -bg-deep;
+}
+
+/* Sidebar */
+.sidebar {
+    -fx-background-color: -bg-surface;
+    -fx-min-width: 250px;
+    -fx-max-width: 250px;
+    -fx-border-color: -border-color;
+    -fx-border-width: 0 1 0 0;
+    -fx-padding: 30 15;
+}
+
+.sidebar-logo {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -accent;
+    -fx-padding: 0 0 40 10;
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -text-secondary;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+    -fx-padding: 12 15;
+    -fx-background-radius: -radius-md;
+    -fx-alignment: center-left;
+    -fx-cursor: hand;
+}
+
+.nav-button:hover {
+    -fx-background-color: -bg-glass;
+    -fx-text-fill: -text-primary;
+}
+
+.nav-button-active {
+    -fx-background-color: -accent;
+    -fx-text-fill: white;
+}
+
+/* Content Area */
+.workspace {
+    -fx-background-color: -bg-deep;
+    -fx-padding: 0;
+}
+
+/* Screenplay Editor */
+.editor-container {
+    -fx-padding: 40;
+    -fx-alignment: top-center;
+}
+
+.screenplay-paper {
+    -fx-background-color: white;
+    -fx-min-width: 8.5in;
+    -fx-min-height: 11in;
+    -fx-max-width: 8.5in;
+    -fx-padding: 1in;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 20, 0, 0, 10);
+}
+
+.screenplay-textarea {
+    -fx-background-color: transparent;
+    -fx-font-family: 'Courier New', Courier, monospace;
+    -fx-font-size: 12pt;
+    -fx-text-fill: black;
+    -fx-padding: 0;
+    -fx-border-width: 0;
+}
+
+/* Cards */
+.modern-card {
+    -fx-background-color: -bg-elevated;
+    -fx-background-radius: -radius-lg;
+    -fx-border-color: -border-color;
+    -fx-border-radius: -radius-lg;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 15, 0, 0, 5);
+}
+
+.modern-card:hover {
+    -fx-border-color: -accent;
+    -fx-translate-y: -2px;
+}
+
+/* Typography */
+.h1 {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-primary;
+}
+
+.h2 {
+    -fx-font-size: 18px;
+    -fx-font-weight: 600;
+    -fx-text-fill: -text-primary;
+}
+
+.p {
+    -fx-font-size: 14px;
+    -fx-text-fill: -text-secondary;
+}
+
+/* Buttons */
+.btn-primary {
+    -fx-background-color: -accent;
+    -fx-text-fill: white;
+    -fx-padding: 10 20;
+    -fx-background-radius: -radius-md;
+    -fx-font-weight: bold;
+}
+
+.btn-secondary {
+    -fx-background-color: -bg-glass;
+    -fx-text-fill: -text-primary;
+    -fx-padding: 10 20;
+    -fx-background-radius: -radius-md;
+    -fx-border-color: -border-color;
+}
+
+/* Forms */
+.text-input {
+    -fx-background-color: -bg-deep;
+    -fx-text-fill: -text-primary;
+    -fx-prompt-text-fill: -text-muted;
+    -fx-padding: 10;
+    -fx-background-radius: 6px;
+    -fx-border-color: -border-color;
+}
+
+.text-input:focused {
+    -fx-border-color: -accent;
+}

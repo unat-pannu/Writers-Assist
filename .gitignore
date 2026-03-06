@@ -1,0 +1,8 @@
+bin/
+y/
+*.class
+.DS_Store
+*.db
+sources.txt
+.gemini/
+*.log
